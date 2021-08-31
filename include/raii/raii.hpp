@@ -32,9 +32,9 @@ public:
     rhs._storage = nullptr;
   }
 
-  operator T() & { return _storage ? *_storage : std::declval<T>(); }
+  operator T() & { return *_storage; }
 
-  operator T() const & { return _storage ? *_storage : std::declval<T>(); }
+  operator T() const & { return *_storage ; }
 
   // XXX: To prevent slicing, rvalue cant note be converted implicitly.
   operator T() && = delete;
@@ -42,7 +42,7 @@ public:
   // XXX: To prevent slicing, rvalue cant note be converted implicitly.
   operator T() const && = delete;
 
-  const T getVal() const { return _storage ? *_storage : std::declval<T>(); }
+  const T getVal() const { return *_storage ; }
 };
 
 template <typename T>

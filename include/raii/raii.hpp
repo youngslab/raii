@@ -2,12 +2,15 @@
 
 #include <memory>
 #include <functional>
+#include <any>
+#include <vector>
 
 namespace raii {
 
 template <typename T> class AutoDeletable {
 private:
   std::shared_ptr<T> _storage;
+	std::vector<std::any> _deps;
 
 public:
   AutoDeletable() : _storage(nullptr) {}
@@ -32,6 +35,12 @@ public:
     rhs._storage = nullptr;
   }
 
+	~AutoDeletable() {
+		this->_storage = nullptr;
+
+		this->_deps.clear();
+	}
+
   operator T() & { return *_storage; }
 
   operator T() const & { return *_storage ; }
@@ -41,6 +50,8 @@ public:
 
   // XXX: To prevent slicing, rvalue cant note be converted implicitly.
   operator T() const && = delete;
+
+	auto dependOn(std::any dependency) -> void { _deps.push_back(dependency);}
 
   const T getVal() const { return *_storage ; }
 };

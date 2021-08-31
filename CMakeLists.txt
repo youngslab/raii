@@ -2,10 +2,12 @@
 
 cmake_minimum_required(VERSION 3.10)
 
-project(raii LANGUAGES CXX)
+set(RAII_LIBRARY_NAME raii)
 
-add_library(${CMAKE_PROJECT_NAME} INTERFACE)
+project(${RAII_LIBRARY_NAME} LANGUAGES CXX)
 
-target_include_directories(${CMAKE_PROJECT_NAME} INTERFACE ./include)
+add_library(${RAII_LIBRARY_NAME} INTERFACE)
+
+target_include_directories(${RAII_LIBRARY_NAME} INTERFACE ./include)
 
 

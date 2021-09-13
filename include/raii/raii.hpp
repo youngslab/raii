@@ -51,19 +51,11 @@ public:
   ~AutoDeletable() {}
 
   operator T() & {
-    if (_storage == nullptr) {
-      throw std::runtime_error(
-	  fmt::format("Raii Not Initilized(&) this={}", fmt::ptr(this)));
-    }
-    return (*_storage).value;
+    return _storage ? (*_storage).value : T{};
   }
 
   operator T() const & {
-    if (_storage == nullptr) {
-      throw std::runtime_error(
-	  fmt::format("Raii Not Initilized(const&) this={}", fmt::ptr(this)));
-    }
-    return (*_storage).value;
+    return _storage ? (*_storage).value : T{};
   }
 
   // XXX: To prevent slicing, rvalue cant note be converted implicitly.
